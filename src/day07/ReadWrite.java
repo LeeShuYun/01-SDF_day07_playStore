@@ -1,4 +1,4 @@
-package comparing;
+package day07;
 
 import java.io.BufferedReader;
 import java.io.File;

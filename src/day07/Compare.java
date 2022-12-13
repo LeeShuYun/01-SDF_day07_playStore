@@ -1,4 +1,4 @@
-package comparing;
+package day07;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +23,29 @@ public class Compare {
         File file = Paths.get("comparing/googleplaystore.csv").toFile(); 
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
+
+        //we can directly use the buffered reader stream and process it with stream() stuff
+        //apparently this works for all stream of data
+        List<App> apps = br.lines()
+            //skip the header row
+            .skip(1) 
+            //break up the row into individual cells
+            .map(l -> l.split(",")) 
+            //hacky way but it chooses the lines where there's no commas in the app name
+            .filter(cols -> cols.length <= 14) 
+            //removes all entires with NaN in Ratings column 
+            .filter(cols -> !cols[2].trim().toLowerCase().equals("nan")) 
+            .map(cols -> {
+                App app = new App();
+                app.setName(cols[0]);
+                app.setCategory(cols[1]);
+                app.setRating(Float.parseFloat(cols[2]));
+                return app;
+            })
+            .toList(); //outputs the stream to list
+        
+            br.close();
+            fr.close();
 
         String line;
         
@@ -57,7 +80,7 @@ public class Compare {
         //https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/stream/Collectors.html
         // Optional<Integer> total = numList.stream()
         //                         .map(n -> "%d%d".formatted(n, n))
-        //                         // .map(Integer::parseInt)
+        //                         // .map(Integer::parseInt) //convert the string
         //                         .collect(
         //                             Collectors.reducing((0, accumulator, i) -> {
         //                                 System.out.printf("total:%d, i:%d", accumulator, i);

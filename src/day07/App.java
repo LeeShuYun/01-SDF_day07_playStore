@@ -1,4 +1,4 @@
-package comparing;
+package day07;
 
 public class App {
     private String name;
@@ -21,6 +21,11 @@ public class App {
     }
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "App [name=" + name + ", category=" + category + ", rating=" + rating + "]";
     }
 
     
